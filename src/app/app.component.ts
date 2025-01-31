@@ -18,5 +18,4 @@ import { DashboardItemComponent } from "./components/dashboard/dashboard-item/da
 ],
 })
 export class AppComponent {
-  currentStatus = 'online';
 }
