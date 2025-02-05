@@ -9,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 //OnInit forces the component to use ngOnInit to avoid typos
 export class StatusDasboardComponent implements OnInit {
   currentStatus: 'online' | 'offline' | 'unknown' = 'online';
+  // private interval?: ReturnType<typeof setInterval>;
 
   // ngOnInit runs when the component has been initialized and allows for inputs to be available
   ngOnInit() {
+    console.log('onInit');
+    // this.interval = setInterval(() => {
     setInterval(() => {
       const rnd = Math.random();
       if (rnd < 0.5) {
@@ -23,4 +26,8 @@ export class StatusDasboardComponent implements OnInit {
       }
     }, 5000);
   }
+
+  // ngOnDestroy() {
+  //   clearInterval(this.interval);
+  // }
 }
