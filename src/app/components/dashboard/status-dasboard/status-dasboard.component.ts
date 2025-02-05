@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-status-dasboard',
@@ -6,6 +6,21 @@ import { Component } from '@angular/core';
   templateUrl: './status-dasboard.component.html',
   styleUrl: './status-dasboard.component.css',
 })
-export class StatusDasboardComponent {
-  currentStatus = 'online';
+//OnInit forces the component to use ngOnInit to avoid typos
+export class StatusDasboardComponent implements OnInit {
+  currentStatus: 'online' | 'offline' | 'unknown' = 'online';
+
+  // ngOnInit runs when the component has been initialized and allows for inputs to be available
+  ngOnInit() {
+    setInterval(() => {
+      const rnd = Math.random();
+      if (rnd < 0.5) {
+        this.currentStatus = 'online';
+      } else if (rnd < 0.9) {
+        this.currentStatus = 'offline';
+      } else {
+        this.currentStatus = 'unknown';
+      }
+    }, 5000);
+  }
 }
