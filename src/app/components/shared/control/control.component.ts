@@ -16,7 +16,7 @@ import {
   // this will always add a property to the host element meaning every app-control will have the control class. This only applies if encapsulation is disabled
   host: {
     class: 'control',
-    '(click)': 'onClick()',
+    // '(click)': 'onClick()',
   },
 })
 export class ControlComponent {
@@ -27,9 +27,9 @@ export class ControlComponent {
   //   console.log('click');
   // }
   label = input.required<string>();
-  private readonly el = inject(ElementRef);
-  onClick() {
-    console.log('click');
-    console.log(this.el);
-  }
+  // private readonly el = inject(ElementRef);
+  // onClick() {
+  //   console.log('click');
+  //   console.log(this.el);
+  // }
 }
