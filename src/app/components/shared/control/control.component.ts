@@ -1,5 +1,7 @@
 import {
   Component,
+  contentChild,
+  ContentChild,
   ElementRef,
   inject,
   input,
@@ -16,7 +18,7 @@ import {
   // this will always add a property to the host element meaning every app-control will have the control class. This only applies if encapsulation is disabled
   host: {
     class: 'control',
-    // '(click)': 'onClick()',
+    '(click)': 'onClick()',
   },
 })
 export class ControlComponent {
@@ -27,9 +29,18 @@ export class ControlComponent {
   //   console.log('click');
   // }
   label = input.required<string>();
-  // private readonly el = inject(ElementRef);
-  // onClick() {
-  //   console.log('click');
-  //   console.log(this.el);
-  // }
+
+  // contentchild is how you get access to the ref object of projected content
+  // @ContentChild("input") private readonly control?: ElementRef<HTMLInputElement | HTMLTextAreaElement>
+  private readonly control =
+    contentChild.required<ElementRef<HTMLInputElement | HTMLTextAreaElement>>(
+      'input'
+    );
+
+  private readonly el = inject(ElementRef);
+  onClick() {
+    console.log('click');
+    console.log(this.el);
+    console.log(this.control().nativeElement);
+  }
 }
