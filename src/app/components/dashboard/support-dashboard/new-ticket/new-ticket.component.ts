@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   OnInit,
+  output,
   viewChild,
 } from '@angular/core';
 import { ButtonComponent } from '../../../shared/button/button.component';
@@ -21,17 +22,21 @@ export class NewTicketComponent implements AfterViewInit, OnInit {
   private readonly form =
     viewChild.required<ElementRef<HTMLFormElement>>('form');
 
+  add = output<{ title: string; text: string }>();
+
   ngOnInit(): void {
     console.log('OnInit');
+    console.log(this.form().nativeElement);
   }
 
+  // this lifecycle hook is similar to ngOnInit, but it is called when the dom has loaded
   ngAfterViewInit(): void {
     console.log('AfterViewInit');
+    console.log(this.form().nativeElement);
   }
 
   onSubmit(title: string, ticketText: string) {
-    console.log(title);
-    console.log(ticketText);
+    this.add.emit({ title: title, text: ticketText });
     this.form().nativeElement.reset();
   }
 }

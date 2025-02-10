@@ -1,4 +1,11 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 
 @Component({
   selector: 'app-status-dasboard',
@@ -8,9 +15,20 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 })
 //OnInit forces the component to use ngOnInit to avoid typos
 export class StatusDasboardComponent implements OnInit {
-  currentStatus: 'online' | 'offline' | 'unknown' = 'online';
-  private destroyRef = inject(DestroyRef);
+  currentStatus = signal<'online' | 'offline' | 'unknown'>('offline');
+  private readonly destroyRef = inject(DestroyRef);
   // private interval?: ReturnType<typeof setInterval>;
+
+  constructor() {
+    // reading signals inside of a constructor will only execute once. To get around this, you can use the effect function
+    effect((onCleanup) => {
+      console.log(this.currentStatus());
+      onCleanup(() => {
+        // this will clean up and code before the effect is ran again
+        console.log("cleanup");
+      });
+    });
+  }
 
   // ngOnInit runs when the component has been initialized and allows for inputs to be available
   ngOnInit() {
@@ -19,11 +37,11 @@ export class StatusDasboardComponent implements OnInit {
     const interval = setInterval(() => {
       const rnd = Math.random();
       if (rnd < 0.5) {
-        this.currentStatus = 'online';
+        this.currentStatus.set('online');
       } else if (rnd < 0.9) {
-        this.currentStatus = 'offline';
+        this.currentStatus.set('offline');
       } else {
-        this.currentStatus = 'unknown';
+        this.currentStatus.set('unknown');
       }
     }, 5000);
     this.destroyRef.onDestroy(() => {

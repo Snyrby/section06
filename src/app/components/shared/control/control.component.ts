@@ -1,4 +1,7 @@
 import {
+  AfterContentInit,
+  afterNextRender,
+  afterRender,
   Component,
   contentChild,
   ContentChild,
@@ -21,7 +24,7 @@ import {
     '(click)': 'onClick()',
   },
 })
-export class ControlComponent {
+export class ControlComponent implements AfterContentInit {
   // this does the same thing as the host property in the component. This is considered discouraged.
   // Within in the decorator, you can select the actual host property you want to change
   // @HostBinding('class') className = 'control';
@@ -38,6 +41,23 @@ export class ControlComponent {
     );
 
   private readonly el = inject(ElementRef);
+
+  constructor() {
+    // this will run no matter what whenever any change happens across the entire application
+    afterRender(() => {
+      console.log('afterRender');
+    });
+
+    // this will run no matter what whenever any next change happens across the entire application
+    afterNextRender(() => {
+      console.log('afterNextRender');
+    });
+  }
+
+  // this will run after the content has been rendered like ngcontent
+  ngAfterContentInit() {
+    console.log('After content initialization');
+  }
   onClick() {
     console.log('click');
     console.log(this.el);
